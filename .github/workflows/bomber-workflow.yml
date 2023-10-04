@@ -1,0 +1,34 @@
+name: Bomber Example
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  bomber-example:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout Repo
+          uses: actions/checkout@master
+
+        - name: Install Bomber
+          run: dpkg -i bomber_0.4.1_linux_arm64.deb
+
+        - name: Setup Node
+          uses: actions/setup-node@v2
+
+        - name: Install cdxgen
+          run: npm install -g @cyclonedx/cdxgen
+
+        - name: Generate SBOM with cdxgen
+          run: cdxgen --spec-version=1.4 -o bom.json
+
+        - name: Check SBOM with bomber
+          run: bomber scan bom.json
+
+        - name: Upload SBOM
+          uses: actions/upload-artifact@v3
+          with:
+            name: sbom-cyclonedx
+            path: bom.json
+            retention-days: 5
