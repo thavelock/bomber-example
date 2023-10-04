@@ -14,7 +14,7 @@ jobs:
         - name: Install Bomber
           run: |
             curl https://github.com/devops-kung-fu/bomber/releases/download/v0.4.4/bomber_0.4.4_linux_amd64.deb
-            dpkg -i bomber_0.4.4_linux_amd64.deb
+            sudo dpkg -i bomber_0.4.4_linux_amd64.deb
 
         - name: Setup Node
           uses: actions/setup-node@v2
